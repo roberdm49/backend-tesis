@@ -11,6 +11,7 @@ const usersFile = './users.json';
 const users = require(usersFile);
 const patientsImagesFile = './patientsImages.json';
 const patientsImages = require(patientsImagesFile);
+const getFilteredUserInformation = require('./api/helpers/filteredInformation');
 
 app.use(cors());
 
@@ -42,16 +43,6 @@ protectedRoutes.use((req, res, next) => {
 });
 
 module.exports = protectedRoutes;
-
-const getFilteredUserInformation = (user) => {
-  return {
-    id: user.id,
-    avatar: user.avatar,
-    name: user.name,
-    lastname: user.lastname,
-    role: user.role,
-  }
-}
 
 const PORT = 3030;
 
