@@ -13,11 +13,12 @@ const patientsImagesFile = './patientsImages.json';
 const patientsImages = require(patientsImagesFile);
 const getFilteredUserInformation = require('./api/helpers/filteredInformation');
 
-app.use(cors());
-
-app.use(morgan('dev'));
-app.use(express.json({limit: '5mb'}))
-app.use(express.urlencoded({ extended: true }));
+app.use(
+  express.json({ limit: '5mb' }),
+  express.urlencoded({ extended: true }),
+  cors(),
+  morgan('dev'),
+);
 
 app.set('key', config.key);
 
@@ -40,8 +41,6 @@ protectedRoutes.use((req, res, next) => {
     });
   }
 });
-
-module.exports = protectedRoutes;
 
 const PORT = 3030;
 
