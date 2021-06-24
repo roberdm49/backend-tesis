@@ -5,8 +5,6 @@ const users = require(usersFile);
 
 class UserModel {
   getData() {
-    console.log(users)
-    console.log(typeof users)
     return users;
   }
 
