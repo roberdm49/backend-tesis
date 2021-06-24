@@ -5,8 +5,6 @@ const patientsImages = require(patientsImagesFile);
 
 class PatientModel {
   getData() {
-    console.log(patientsImages)
-    console.log(typeof patientsImages)
     return patientsImages;
   }
 
