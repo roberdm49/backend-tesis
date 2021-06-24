@@ -5,7 +5,7 @@ const usersFile = '../../mocks/users.json';
 const users = require(usersFile);
 
 
-const { createTokens } = require('../../config/tokenGenerator');
+const { createTokens } = require('../../config/createToken');
 
 router.post('/', (req, res) => {
   const { username, password } = {...req.body};
