@@ -15,8 +15,8 @@ app.use(morgan('dev'));
 
 app.use('/login', login);
 app.use('/signin', signin);
-app.use('/users', user); //TODO: cambiar USERS por USER
-app.use('/patients', patient); //TODO: cambiar PATIENTS por PATIENT
+app.use('/users', user); //TODO: change USERS for USER
+app.use('/patients', patient); //TODO: change PATIENTS for PATIENT
 
 const PORT = 3030;
 

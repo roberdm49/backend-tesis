@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
-const fs = require('fs');
-const usersFile = '../../mocks/users.json';
-const users = require(usersFile);
+const UserModel = require('../models/UserModel');
 
 router.post('/', (req, res) => {
   const {
@@ -14,7 +11,11 @@ router.post('/', (req, res) => {
     password,
     role,
   } = req.body;
+
+  const userModel = new UserModel();
+  let users = userModel.getData();
   const user = users.find(user => user.username === username);
+
   if (!!user) {
     res.json({
       mensaje: "The user already exists."
@@ -25,11 +26,10 @@ router.post('/', (req, res) => {
     }, -1);
     nextId += 1;
     users.push({ id: nextId, name, lastname, avatar, username, password, role });
-    const usersPath = path.join(__dirname,'../../users.json');
-    fs.writeFile(usersPath, JSON.stringify(users, null, 2), () => {
+    userModel.writeData(users, () => {
       res.json({
         mensaje: 'Successful user creation'
-      })
+      });
     });
   }
 });
