@@ -9,7 +9,7 @@ class UserModel {
   }
 
   writeData(newUsers, callback) {
-    const dataPath = path.join(__dirname,'../../users.json');
+    const dataPath = path.join(__dirname,'../../mocks/users.json');
     fs.writeFile(dataPath, JSON.stringify(newUsers, null, 2), callback);
   }
 };
