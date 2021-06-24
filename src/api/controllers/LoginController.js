@@ -2,15 +2,18 @@ const { createTokens } = require('../../config/createToken');
 const getFilteredUserInformation = require('../helpers/filteredInformation');
 
 class LoginController {
-  constructor(body, users) {
+  userModel = new UserModel();
+
+  constructor(userModel, body) {
     const { username, password } = body;
     this.username = username;
     this.password = password;
-    this.users = users;
+    this.userModel = userModel;
   };
 
   getCurrentUser() {
-    const user = this.users.find(user => user.username === this.username);
+    const users = this.userModel.getData();
+    const user = users.find(user => user.username === this.username);
     return user;
   };
   
