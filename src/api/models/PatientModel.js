@@ -9,7 +9,7 @@ class PatientModel {
   }
 
   writeData(newPatientsImages, callback) {
-    const dataPath = path.join(__dirname,'../../mocks/patientImages.json');
+    const dataPath = path.join(__dirname,'../../mocks/patientsImages.json');
     fs.writeFile(dataPath, JSON.stringify(newPatientsImages, null, 2), callback);
   }
 };
