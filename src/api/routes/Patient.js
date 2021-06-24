@@ -4,9 +4,9 @@ const path = require('path');
 const fs = require('fs');
 const patientsImagesFile = '../../mocks/patientsImages.json';
 const patientsImages = require(patientsImagesFile);
-const { validateToken } = require('../../config/jwt');
+const validateToken = require('../middlewares/validateToken');
 
-router.post('/patients', validateToken, (req, res) => {
+router.post('/', validateToken, (req, res) => {
   const {
     dni,
     images,

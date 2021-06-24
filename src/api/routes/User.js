@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const usersFile = '../../mocks/users.json';
 const users = require(usersFile);
-const { validateToken } = require('../../config/jwt');
+const validateToken = require('../middlewares/validateToken');
 const getFilteredUserInformation = require('../helpers/filteredInformation');
 
 router.post('/:id', validateToken, (req, res) => {

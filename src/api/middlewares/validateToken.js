@@ -1,13 +1,5 @@
-const { sign, verify } = require('jsonwebtoken');
+const { verify } = require('jsonwebtoken');
 
-const createTokens = (user) => {
-  const { username } = user;
-  const accessToken = sign({ username }, 'jwtsecretplschange');
-
-  return accessToken;
-};
-
-//TODO: this is a middleware so this function can be moved to the "middlewares" folder
 const validateToken = (req, res, next) => {
   const accessToken = req.headers['access-token'];
   console.log(accessToken);
@@ -25,4 +17,4 @@ const validateToken = (req, res, next) => {
   }
 }
 
-module.exports = { createTokens, validateToken };
+module.exports = validateToken;
