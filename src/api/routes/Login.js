@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const getFilteredUserInformation = require('../helpers/filteredInformation');
-const usersFile = '../../mocks/users.json';
-const users = require(usersFile);
-
+const UserModel = require('../models/UserModel');
 
 const { createTokens } = require('../../config/createToken');
 
 router.post('/', (req, res) => {
   const { username, password } = {...req.body};
+
+  const userModel = new UserModel();
+  let users = userModel.getData();
   const user = users.find(user => user.username === username);
+  
   if (!!user) {
     if (user.password === password) {
       const accessToken = createTokens(user);
