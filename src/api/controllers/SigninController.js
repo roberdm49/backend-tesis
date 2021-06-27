@@ -23,7 +23,7 @@ class SigninController {
 
   signinNewUser(callback) {
 
-    let nextId = users.reduce((acum, actual) => {
+    let nextId = this.users.reduce((acum, actual) => {
       if (parseInt(actual.id) >= acum) return actual.id;
     }, -1) + 1;
 
