@@ -22,14 +22,14 @@ class SigninController {
   };
 
   signinNewUser(callback) {
-
-    let nextId = this.users.reduce((acum, actual) => {
+    const users = this.userModel.getData();
+    let nextId = users.reduce((acum, actual) => {
       if (parseInt(actual.id) >= acum) return actual.id;
     }, -1) + 1;
 
     nextId += 1;
 
-    this.users.push({
+    users.push({
       id: nextId,
       name: this.name,
       lastname: this.lastname,
