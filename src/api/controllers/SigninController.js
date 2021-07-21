@@ -1,14 +1,29 @@
+const {
+  validLastname,
+  validName,
+  validPassword,
+  validRole,
+  validUsername,
+} = require('../validations/validationFields');
+
 class SigninController {
 
   constructor(userModel, body) {
-    const { name, lastname, avatar, username, password, role } = body;
-    this.name = name;
-    this.lastname = lastname;
+    const { avatar, lastname, name, password, role, username } = body;
     this.avatar = avatar;
-    this.username = username;
+    this.lastname = lastname;
+    this.name = name;
     this.password = password;
     this.role = role;
+    this.username = username;
     this.userModel = userModel;
+  }
+
+  getIfTheFieldsAreValid() {
+    return {
+      areValid: 'boolean value',
+      message: null | 'error message',
+    };
   }
 
   getCurrentUser() {
