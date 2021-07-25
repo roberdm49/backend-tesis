@@ -14,11 +14,11 @@ router.post('/', (req, res) => {
       message: 'Successful user authentication.',
       ...responseData,
     });
+  } else {
+    res.json({
+      message: 'Invalid information.'
+    });
   };
-
-  res.json({
-    message: 'Invalid information.'
-  });
 });
 
 module.exports = router;
