@@ -19,13 +19,11 @@ class LoginController {
   logUser() {
     const user = this.getCurrentUser();
     const accessToken = createTokens(user);
-    const expireTime = 1440;
     const filteredUserInformation = getFilteredUserInformation(user);
 
     const responseData = {
       user: filteredUserInformation,
       token: accessToken,
-      expireTime: expireTime,
     };
 
     return responseData;
