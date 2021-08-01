@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const UserModel = require('../models/UserModel');
+const { MemoryUserModel } = require('../models/UserModel');
 const LoginController = require('../controllers/LoginController');
 
 router.post('/', (req, res) => {
-  const loginController = new LoginController(new UserModel(), req.body);
-  const isAValidUser = loginController.isAValidUser();
+  const loginController = new LoginController(new MemoryUserModel(), req.body);
 
-  if (isAValidUser) {
+  if (loginController.isAValidUser()) {
     const responseData = loginController.logUser();
 
     res.json({

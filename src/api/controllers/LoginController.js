@@ -18,12 +18,12 @@ class LoginController {
   
   logUser() {
     const user = this.getCurrentUser();
-    const accessToken = createTokens(user);
+    const authorization = createTokens(user);
     const filteredUserInformation = getFilteredUserInformation(user);
 
     const responseData = {
       user: filteredUserInformation,
-      token: accessToken,
+      token: authorization,
     };
 
     return responseData;

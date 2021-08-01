@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const validateToken = require('../middlewares/validateToken');
-const PatientModel = require('../models/PatientModel');
+const { MemoryPatientModel } = require('../models/PatientModel');
 
 router.post('/', validateToken, (req, res) => {
   const {
@@ -9,21 +9,21 @@ router.post('/', validateToken, (req, res) => {
     images,
   } = req.body;
 
-  const patientModel = new PatientModel();
-  let patients = patientModel.getData();
-  const patient = patients.find(elem => elem.dni === dni);
+  const patientModel = new MemoryPatientModel();
+  console.log({dni})
+  let patient = patientModel.getPatient(dni);
 
-  if (!patient) {
-    patients.push({ dni, images });
-    patientModel.writeData(patients, () => {
+  if (patient) {
+    res.json({
+      mensaje: "The patient already exists."
+    });
+  } else {
+    const newPatient = { dni, images };
+    patientModel.setPatient(newPatient, () => {
       res.json({
         mensaje: 'Successful patient creation'
       })
     })
-  } else {
-    res.json({
-      mensaje: "The patient already exists."
-    });
   }
 })
 

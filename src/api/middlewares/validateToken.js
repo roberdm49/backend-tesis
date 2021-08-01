@@ -1,14 +1,13 @@
 const { verify } = require('jsonwebtoken');
 
 const validateToken = (req, res, next) => {
-  const accessToken = req.headers['access-token'];
+  const authorization = req.get('authorization')
 
-  if (!accessToken) return res.status(400).json({ error: 'User not authenticated!' });
+  if (!authorization) return res.status(401).json({ error: 'User not authenticated!' });
   
   try {
-    const validToken = verify(accessToken, 'jwtsecretplschange');
+    const validToken = verify(authorization, 'jwtsecretplschange');
     if (validToken) {
-      req.authenticated = true; // create a new attribute called <autheticated>
       return next();
     }
   } catch(err) {
