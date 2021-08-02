@@ -2,18 +2,19 @@ const { verify } = require('jsonwebtoken');
 
 const validateToken = (req, res, next) => {
   const authorization = req.get('authorization')
-  console.log(authorization)
-  console.log(req.headers['authorization']);
 
-  if (!authorization) return res.status(401).json({ error: 'User not authenticated!' });
+  let token = null;
   
-  try {
-    const validToken = verify(authorization, 'jwtsecretplschange');
-    if (validToken) {
-      return next();
-    }
-  } catch(err) {
-    return res.status(400).json({ error: err });
+  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
+    token = authorization.substring(7);
+  }
+
+  const validToken = verify(token, 'jwtsecretplschange');
+
+  if (!(token && validToken)) {
+    return res.status(401).json({ error: 'Token missing or invalid.' });
+  } else {
+    return next();
   }
 }
 
