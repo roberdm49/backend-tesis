@@ -8,11 +8,11 @@ router.post('/', (req, res) => {
 
   if (signinController.theUserAlreadyExists()) {
     res.json({ message: 'The user already exists.' })
+  } else {
+    signinController.signinNewUser(() => {
+      res.json({ message: 'Successful user creation.' })
+    });
   };
-
-  signinController.signinNewUser(() => {
-    res.json({ message: 'Successful user creation.' })
-  });
 });
 
 module.exports = router;

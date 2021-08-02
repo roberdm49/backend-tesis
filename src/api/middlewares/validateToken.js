@@ -2,6 +2,8 @@ const { verify } = require('jsonwebtoken');
 
 const validateToken = (req, res, next) => {
   const authorization = req.get('authorization')
+  console.log(authorization)
+  console.log(req.headers['authorization']);
 
   if (!authorization) return res.status(401).json({ error: 'User not authenticated!' });
   
