@@ -1,7 +1,7 @@
-const { SPACE } = require('./constants');
+const { SPACE } = require('./constants')
 
 const withoutSpaces = (value) => {
-  return (!value.split('').includes(SPACE));
+  return (!value.split('').includes(SPACE))
 }
 
-module.exports = withoutSpaces;
+module.exports = withoutSpaces

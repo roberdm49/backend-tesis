@@ -17,5 +17,5 @@ module.exports = {
   USERNAME_MIN_LENGTH,
   DNI_MIN_LENGTH,
   EMPTY_CHARACTER,
-  SPACE,
+  SPACE
 }

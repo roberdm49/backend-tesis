@@ -1,7 +1,7 @@
-const { EMPTY_CHARACTER } = require('./constants');
+const { EMPTY_CHARACTER } = require('./constants')
 
 const requireField = (value) => {
-  return value !== EMPTY_CHARACTER;
+  return value !== EMPTY_CHARACTER
 }
 
-module.exports = requireField;
+module.exports = requireField

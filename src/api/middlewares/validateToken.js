@@ -1,21 +1,21 @@
-const { verify } = require('jsonwebtoken');
+const { verify } = require('jsonwebtoken')
 
 const validateToken = (req, res, next) => {
   const authorization = req.get('authorization')
 
-  let token = null;
-  
+  let token = null
+
   if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-    token = authorization.substring(7);
+    token = authorization.substring(7)
   }
 
-  const validToken = verify(token, 'jwtsecretplschange');
+  const validToken = verify(token, 'jwtsecretplschange')
 
   if (!(token && validToken)) {
-    return res.status(401).json({ error: 'Token missing or invalid.' });
+    return res.status(401).json({ error: 'Token missing or invalid.' })
   } else {
-    return next();
+    return next()
   }
 }
 
-module.exports = validateToken;
+module.exports = validateToken

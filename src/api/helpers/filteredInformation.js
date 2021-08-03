@@ -4,8 +4,8 @@ const getFilteredUserInformation = (user) => {
     avatar: user.avatar,
     name: user.name,
     lastname: user.lastname,
-    role: user.role,
+    role: user.role
   }
 }
 
-module.exports = getFilteredUserInformation;
+module.exports = getFilteredUserInformation
