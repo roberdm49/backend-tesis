@@ -65,6 +65,10 @@ app.get('/patients/:dni', (request, response) => {
   response.json('Response from patients/:dni!')
 })
 
+app.use((request, response) => {
+  response.status(404).end()
+})
+
 const PORT = 3030
 
 app.listen(PORT, () => {

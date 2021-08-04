@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "nodemon src/index.js",
-    "lint": "eslint --fix ."
+    "lint": "standard --fix"
   },
   "keywords": [],
   "author": "",
