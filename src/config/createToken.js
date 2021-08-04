@@ -8,4 +8,4 @@ const createTokens = (user) => {
   return authorization
 }
 
-module.exports = { createTokens }
+module.exports = createTokens

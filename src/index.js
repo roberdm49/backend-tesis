@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const morgan = require('morgan')
+const createToken = require('./config/createToken')
+const validateToken = require('./api/middlewares/validateToken')
 
 app.use(cors())
 app.use(express.json())
@@ -32,9 +34,10 @@ const users = [
 app.post('/login', (request, response) => {
   const { username, password } = request.body
   const user = users.find(localUser => localUser.username === username)
+  const jwt = user ? createToken(user) : null
 
   return (user && user.password === password)
-    ? response.status(202).json('aca iria el jwt')
+    ? response.status(202).json({ jwt })
     : response.status(400).json('Response from login!')
 })
 
@@ -53,15 +56,16 @@ app.post('/signin', (request, response) => {
   }
   const ids = users.map(user => user.id)
   const id = ids.length ? Math.max(...ids) : 1
-  users.push({ id, name, lastname, username, password, avatar: null, role })
-  response.status(201).end()
+  const userData = { id, name, lastname, username, password, avatar: null, role }
+  users.push(userData)
+  return response.status(201).end()
 })
 
-app.post('/patients', (request, response) => {
+app.post('/patients', validateToken, (request, response) => {
   response.json('Response from patients!')
 })
 
-app.get('/patients/:dni', (request, response) => {
+app.get('/patients/:dni', validateToken, (request, response) => {
   response.json('Response from patients/:dni!')
 })
 
