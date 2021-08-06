@@ -1,79 +1,79 @@
+require('dotenv').config()
+require('./mongo')
+
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const morgan = require('morgan')
 const createToken = require('./config/createToken')
 const validateToken = require('./api/middlewares/validateToken')
+const User = require('./api/models/User')
+const notFound = require('./api/middlewares/notFound')
+const handleErrors = require('./api/middlewares/handleErrors')
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-const users = [
-  {
-    id: 1,
-    name: 'rober',
-    lastname: 'marcos',
-    username: 'roberto123',
-    password: 'roberto123',
-    role: 'technical',
-    avatar: null
-  },
-  {
-    id: 5,
-    name: 'Roberto',
-    lastname: 'Marcos',
-    username: 'roberto124',
-    password: 'roberto124',
-    role: 'technical',
-    avatar: null
-  }
-]
-
-app.post('/login', (request, response) => {
+app.post('/login', (request, response, next) => {
   const { username, password } = request.body
-  const user = users.find(localUser => localUser.username === username)
-  const jwt = user ? createToken(user) : null
-
-  return (user && user.password === password)
-    ? response.status(202).json({ jwt })
-    : response.status(400).json('Response from login!')
+  User.findOne({ username, password })
+    .then(userFound => {
+      if (!userFound) {
+        return response.status(400).json({ error: 'User or password incorrect' })
+      }
+      const jwt = userFound ? createToken(userFound) : null
+      return response.status(202).json({ jwt })
+    })
+    .catch(err => {
+      return next(err)
+    })
 })
 
-app.post('/signin', (request, response) => {
+app.post('/signin', (request, response, next) => {
   const {
     name,
     lastname,
     username,
     password,
     // avatar,
+    email,
     role
   } = request.body
-  const user = users.find(localUser => localUser.username === username)
-  if (user) {
-    return response.status(409).json({ error: 'The user already exists' })
-  }
-  const ids = users.map(user => user.id)
-  const id = ids.length ? Math.max(...ids) : 1
-  const userData = { id, name, lastname, username, password, avatar: null, role }
-  users.push(userData)
-  return response.status(201).end()
+
+  User.findOne({ username })
+    .then(userFound => {
+      if (userFound) {
+        return response.status(409).json({ error: 'The user already exists' })
+      }
+      const userData = { name, lastname, username, password, email, avatar: null, role }
+      const userDB = new User(userData)
+      userDB.save()
+        .then(() => response.status(201).end())
+        .catch(err => next(err))
+    })
+    .catch(err => {
+      return next(err)
+    })
 })
 
 app.post('/patients', validateToken, (request, response) => {
-  response.json('Response from patients!')
+  response.json('Response from POST patients!')
 })
 
 app.get('/patients/:dni', validateToken, (request, response) => {
-  response.json('Response from patients/:dni!')
+  response.json('Response from GET patients/:dni!')
 })
 
-app.use((request, response) => {
-  response.status(404).end()
+app.put('/patients/:dni', validateToken, (request, response) => {
+  response.json('Response from PUT patients/:dni!')
 })
 
-const PORT = 3030
+app.use(notFound)
+app.use(handleErrors)
+
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
