@@ -9,7 +9,7 @@ const validateToken = (req, res, next) => {
     token = authorization.substring(7)
   }
 
-  const validToken = verify(token, 'jwtsecretplschange')
+  const validToken = verify(token, process.env.JWT_PASSWORD)
 
   if (!(token && validToken)) {
     return res.status(401).json({ error: 'Token missing or invalid.' })
