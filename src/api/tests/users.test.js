@@ -1,31 +1,13 @@
 const mongoose = require('mongoose')
-const supertest = require('supertest')
-const { app, server } = require('../../index')
+const { server } = require('../../index')
 const User = require('../models/User')
-
-// api is async
-const api = supertest(app)
-
-const initialUsers = [
-  {
-    name: 'Roberto',
-    lastname: 'Marcos',
-    username: 'roberto',
-    password: 'roberto123',
-    email: 'robertomarcos123@hotmail.com',
-    avatar: null,
-    role: 'techinal'
-  },
-  {
-    name: 'Nacho',
-    lastname: 'Larrabide',
-    username: 'nacho',
-    password: 'nacho123',
-    email: 'nacholarrabide123@hotmail.com',
-    avatar: null,
-    role: 'admin'
-  }
-]
+const {
+  initialUsers,
+  api,
+  validUser,
+  invalidUser,
+  getAllUsernamesFromUsers
+} = require('./helpers')
 
 describe('GET /api/users', () => {
   let response
@@ -52,7 +34,7 @@ describe('GET /api/users', () => {
   })
 
   it('there is an user with the username "roberto"', async () => {
-    const usernames = response.body.map(user => user.username)
+    const usernames = getAllUsernamesFromUsers(response)
     expect(usernames).toContain('roberto')
   })
 })
@@ -63,19 +45,9 @@ describe('POST /api/signin', () => {
   })
 
   it('a valid user can be added', async () => {
-    const newUser = {
-      name: 'Roberto',
-      lastname: 'Marcos',
-      username: 'roberto',
-      password: 'roberto123',
-      email: 'robertomarcos123@hotmail.com',
-      avatar: null,
-      role: 'techinal'
-    }
-
     await api
       .post('/api/signin')
-      .send(newUser)
+      .send(validUser)
       .expect(201)
 
     const response = await api.get('/api/users')
@@ -84,18 +56,9 @@ describe('POST /api/signin', () => {
   })
 
   it('a user without some required field cannot be added', async () => {
-    const newUser = {
-      name: 'Roberto',
-      lastname: 'Marcos',
-      username: 'roberto',
-      password: 'roberto123',
-      email: 'robertomarcos123@hotmail.com',
-      avatar: null
-    }
-
     await api
       .post('/api/signin')
-      .send(newUser)
+      .send(invalidUser)
       .expect(400)
 
     const response = await api.get('/api/users')
