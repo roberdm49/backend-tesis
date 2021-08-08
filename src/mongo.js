@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
-const connectionString = process.env.MONGO_DB_URI
+const { MONGO_DB_URI, MONGO_DB_URI_TEST, NODE_ENV } = process.env
+
+// TODO: IN CI/CD WE NEED TO DELETE THE EXTRA DB AND THE TESTING WITH IT
+const connectionString = NODE_ENV === 'test'
+  ? MONGO_DB_URI_TEST
+  : MONGO_DB_URI
 
 // conection to db
 mongoose.connect(connectionString, {
@@ -19,34 +24,3 @@ mongoose.connect(connectionString, {
 process.on('uncaughtexception', () => {
   mongoose.connection.disconnect()
 })
-
-// User.find({})
-//   .then(result => {
-//     console.log(result)
-//   })
-//   .catch(err => {
-//     console.log(err)
-//   })
-//   .finally(() => {
-//     mongoose.connection.close()
-//   })
-
-// const user = new User({
-//   name: 'rober',
-//   lastname: 'marcos',
-//   username: 'rober',
-//   password: 'rober',
-//   role: 'technical',
-//   avatar: null
-// })
-
-// user.save()
-//   .then(result => {
-//     console.log(result)
-//   })
-//   .catch(err => {
-//     console.log(err)
-//   })
-//   .finally(() => {
-//     mongoose.connection.close()
-//   })

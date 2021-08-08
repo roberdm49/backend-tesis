@@ -10,13 +10,24 @@ const validateToken = require('./api/middlewares/validateToken')
 const User = require('./api/models/User')
 const notFound = require('./api/middlewares/notFound')
 const handleErrors = require('./api/middlewares/handleErrors')
+const checkIfThereIsSomeErrorInTheBody = require('./api/utils/checkIfThereIsSomeErrorInTheBody')
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.post('/login', (request, response, next) => {
+app.get('/api/users', (request, response, next) => {
+  User.find({})
+    .then(usersFound => {
+      return response.json(usersFound)
+    })
+    .catch(err => {
+      return next(err)
+    })
+})
+
+app.post('/api/login', (request, response, next) => {
   const { username, password } = request.body
   User.findOne({ username, password })
     .then(userFound => {
@@ -31,7 +42,7 @@ app.post('/login', (request, response, next) => {
     })
 })
 
-app.post('/signin', (request, response, next) => {
+app.post('/api/signin', (request, response, next) => {
   const {
     name,
     lastname,
@@ -41,6 +52,11 @@ app.post('/signin', (request, response, next) => {
     email,
     role
   } = request.body
+
+  const result = checkIfThereIsSomeErrorInTheBody(request.body)
+  if (result.error) {
+    return response.status(400).json({ error: result.error })
+  }
 
   User.findOne({ username })
     .then(userFound => {
@@ -58,15 +74,15 @@ app.post('/signin', (request, response, next) => {
     })
 })
 
-app.post('/patients', validateToken, (request, response) => {
+app.post('/api/patients', validateToken, (request, response) => {
   response.json('Response from POST patients!')
 })
 
-app.get('/patients/:dni', validateToken, (request, response) => {
+app.get('/api/patients/:dni', validateToken, (request, response) => {
   response.json('Response from GET patients/:dni!')
 })
 
-app.put('/patients/:dni', validateToken, (request, response) => {
+app.put('/api/patients/:dni', validateToken, (request, response) => {
   response.json('Response from PUT patients/:dni!')
 })
 
@@ -74,7 +90,8 @@ app.use(notFound)
 app.use(handleErrors)
 
 const PORT = process.env.PORT
-
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+module.exports = { app, server }
