@@ -14,10 +14,11 @@ describe('GET /api/users', () => {
 
   beforeEach(async () => {
     await User.deleteMany({})
-    const user1 = new User(initialUsers[0])
-    await user1.save()
-    const user2 = new User(initialUsers[1])
-    await user2.save()
+
+    for (const user of initialUsers) {
+      const newUser = new User(user)
+      await newUser.save()
+    }
 
     response = await api.get('/api/users')
   })
@@ -29,7 +30,7 @@ describe('GET /api/users', () => {
       .expect('Content-Type', /application\/json/)
   })
 
-  it('there are two users', async () => {
+  it('there are so many users as the length of the initial users', async () => {
     expect(response.body).toHaveLength(initialUsers.length)
   })
 
