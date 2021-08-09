@@ -1,20 +1,25 @@
+const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/User')
 const createToken = require('../../config/createToken')
 
-loginRouter.post('/', (request, response, next) => {
+loginRouter.post('/', async (request, response, next) => {
   const { username, password } = request.body
-  User.findOne({ username })
-    .then(userFound => {
-      if (!userFound) { // TODO: hashed password validation
-        return response.status(400).json({ error: 'User or password incorrect' })
-      }
-      const jwt = userFound ? createToken(userFound) : null
-      return response.status(202).json({ jwt })
+
+  const user = await User.findOne({ username })
+
+  const passwordCorrect = user === null
+    ? false
+    : await bcrypt.compare(password, user.passwordHash)
+
+  if (!(user && passwordCorrect)) {
+    return response.status(401).json({
+      error: 'Invalid user or password'
     })
-    .catch(err => {
-      return next(err)
-    })
+  }
+
+  const jwt = createToken(user)
+  return response.status(202).json({ jwt })
 })
 
 module.exports = loginRouter
