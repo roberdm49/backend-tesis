@@ -63,7 +63,15 @@ app.post('/api/signin', (request, response, next) => {
       if (userFound) {
         return response.status(409).json({ error: 'The user already exists' })
       }
-      const userData = { name, lastname, username, password, email, avatar: null, role }
+      const userData = {
+        name,
+        lastname,
+        username,
+        passwordHash: password,
+        email,
+        avatar: null,
+        role
+      }
       const userDB = new User(userData)
       userDB.save()
         .then(() => response.status(201).end())
