@@ -39,14 +39,14 @@ describe('endpoints', () => {
     })
   })
 
-  describe('POST /api/signin', () => {
+  describe('POST /api/users', () => {
     beforeEach(async () => {
       await User.deleteMany({})
     })
 
     it('a valid user can be added', async () => {
       await api
-        .post('/api/signin')
+        .post('/api/users')
         .send(validUser)
         .expect(201)
 
@@ -57,7 +57,7 @@ describe('endpoints', () => {
 
     it('a user without some required field cannot be added', async () => {
       await api
-        .post('/api/signin')
+        .post('/api/users')
         .send(invalidUser)
         .expect(400)
 
@@ -67,11 +67,11 @@ describe('endpoints', () => {
     })
 
     it('creations fails with the properly statuscode if the user already exists', async () => {
-      await api.post('/api/signin')
+      await api.post('/api/users')
         .send(validUser)
         .expect(201)
 
-      await api.post('/api/signin')
+      await api.post('/api/users')
         .send(validUser)
         .expect(500) // this is for the mongoose-unique-validator
         .expect('Content-Type', /application\/json/)

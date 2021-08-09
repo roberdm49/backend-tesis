@@ -8,8 +8,8 @@ const morgan = require('morgan')
 
 const notFound = require('./api/middlewares/notFound')
 const handleErrors = require('./api/middlewares/handleErrors')
+
 const patientsRouter = require('./api/controllers/patients')
-const signinRouter = require('./api/controllers/signin')
 const loginRouter = require('./api/controllers/login')
 const usersRouter = require('./api/controllers/users')
 
@@ -20,7 +20,6 @@ app.use(morgan('dev'))
 
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/signin', signinRouter)
 app.use('/api/patients', patientsRouter)
 
 app.use(notFound)
