@@ -1,8 +1,9 @@
+const bcrypt = require('bcrypt')
 const signinRouter = require('express').Router()
 const User = require('../models/User')
 const checkIfThereIsSomeErrorInTheBody = require('../utils/checkIfThereIsSomeErrorInTheBody')
 
-signinRouter.post('/', (request, response, next) => {
+signinRouter.post('/', async (request, response, next) => {
   const {
     name,
     lastname,
@@ -18,28 +19,28 @@ signinRouter.post('/', (request, response, next) => {
     return response.status(400).json({ error: result.error })
   }
 
-  User.findOne({ username })
-    .then(userFound => {
-      if (userFound) {
-        return response.status(409).json({ error: 'The user already exists' })
-      }
-      const userData = {
-        name,
-        lastname,
-        username,
-        passwordHash: password,
-        email,
-        avatar: null,
-        role
-      }
-      const userDB = new User(userData)
-      userDB.save()
-        .then(() => response.status(201).end())
-        .catch(err => next(err))
-    })
-    .catch(err => {
-      return next(err)
-    })
+  const userFound = await User.findOne({ username }).then(userFound => userFound).catch(err => next(err))
+  if (userFound) {
+    return response.status(409).json({ error: 'The user already exists' })
+  }
+
+  const saltRounds = 10
+  const passwordHash = await bcrypt.hash(password, saltRounds)
+
+  const userData = {
+    name,
+    lastname,
+    username,
+    passwordHash,
+    email,
+    avatar: null,
+    role
+  }
+
+  const userDB = new User(userData)
+  userDB.save()
+    .then(() => response.status(201).end())
+    .catch(err => next(err))
 })
 
 module.exports = signinRouter

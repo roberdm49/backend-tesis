@@ -4,9 +4,9 @@ const createToken = require('../../config/createToken')
 
 loginRouter.post('/', (request, response, next) => {
   const { username, password } = request.body
-  User.findOne({ username, password })
+  User.findOne({ username })
     .then(userFound => {
-      if (!userFound) {
+      if (!userFound) { // TODO: hashed password validation
         return response.status(400).json({ error: 'User or password incorrect' })
       }
       const jwt = userFound ? createToken(userFound) : null
