@@ -19,11 +19,6 @@ signinRouter.post('/', async (request, response, next) => {
     return response.status(400).json({ error: result.error })
   }
 
-  const userFound = await User.findOne({ username }).then(userFound => userFound).catch(err => next(err))
-  if (userFound) {
-    return response.status(409).json({ error: 'The user already exists' })
-  }
-
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 

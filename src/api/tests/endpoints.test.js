@@ -65,6 +65,20 @@ describe('endpoints', () => {
 
       expect(response.body).toHaveLength(0)
     })
+
+    it('creations fails with the properly statuscode if the user already exists', async () => {
+      await api.post('/api/signin')
+        .send(validUser)
+        .expect(201)
+
+      await api.post('/api/signin')
+        .send(validUser)
+        .expect(500) // this is for the mongoose-unique-validator
+        .expect('Content-Type', /application\/json/)
+
+      const response = await api.get('/api/users')
+      expect(response.body).toHaveLength(1)
+    })
   })
 
   afterAll(() => {
