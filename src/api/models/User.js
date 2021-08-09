@@ -4,7 +4,7 @@ const userSchema = new Schema({
   name: String,
   lastname: String,
   username: String,
-  password: String,
+  passwordHash: String,
   avatar: String,
   email: String,
   role: String
@@ -15,6 +15,8 @@ userSchema.set('toJSON', {
     returnedObject.id = returnedObject._id
     delete returnedObject._id
     delete returnedObject.__v
+
+    delete returnedObject.passwordHash
   }
 })
 
