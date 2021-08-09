@@ -1,6 +1,6 @@
 const loginRouter = require('express').Router()
 const User = require('../models/User')
-const createToken = require('./config/createToken')
+const createToken = require('../../config/createToken')
 
 loginRouter.post('/', (request, response, next) => {
   const { username, password } = request.body

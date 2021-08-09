@@ -1,7 +1,7 @@
 const usersRouter = require('express').Router()
 const User = require('../models/User')
 
-usersRouter.get('/api/users', (request, response, next) => {
+usersRouter.get('/', (request, response, next) => {
   User.find({})
     .then(usersFound => {
       return response.json(usersFound)

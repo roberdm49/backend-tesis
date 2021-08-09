@@ -24,10 +24,8 @@ describe('GET /api/users', () => {
   })
 
   it('users are returned as json', async () => {
-    await api
-      .get('/api/users')
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+    expect(response.status).toBe(200)
+    expect(response.get('Content-Type')).toMatch(/application\/json/)
   })
 
   it('there are so many users as the length of the initial users', async () => {

@@ -1,5 +1,5 @@
 const patientsRouter = require('express').Router()
-const validateToken = require('./api/middlewares/validateToken')
+const validateToken = require('../middlewares/validateToken')
 
 patientsRouter.post('/', validateToken, (request, response) => {
   response.json('Response from POST patients!')
