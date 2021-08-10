@@ -1,10 +1,10 @@
 const patientsRouter = require('express').Router()
 const Patient = require('../models/Patient')
 const Check = require('../models/Check')
-const validateToken = require('../middlewares/validateToken')
+const userExtractor = require('../middlewares/userExtractor')
 const checkIfThereIsSomeErrorInThePatientBody = require('../utils/checkIfThereIsSomeErrorInThePatientBody')
 
-patientsRouter.post('/', validateToken, async (request, response, next) => {
+patientsRouter.post('/', userExtractor, async (request, response, next) => {
   const {
     dni,
     name,
@@ -50,7 +50,7 @@ patientsRouter.post('/', validateToken, async (request, response, next) => {
   }
 })
 
-patientsRouter.get('/:dni', validateToken, (request, response) => {
+patientsRouter.get('/:dni', userExtractor, (request, response) => {
   const dni = request.params
   const patient = Patient.findOne({ dni }).populate('checks')
   return patient
