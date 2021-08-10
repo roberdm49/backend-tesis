@@ -51,11 +51,11 @@ patientsRouter.post('/', validateToken, async (request, response, next) => {
 })
 
 patientsRouter.get('/:dni', validateToken, (request, response) => {
-  response.json('Response from GET patients/:dni!')
-})
-
-patientsRouter.put('/:dni', validateToken, (request, response) => {
-  response.json('Response from PUT patients/:dni!')
+  const dni = request.params
+  const patient = Patient.findOne({ dni }).populate('checks')
+  return patient
+    ? response.status(200).json({ patient })
+    : response.status(400).json({ error: 'Dni not found' })
 })
 
 module.exports = patientsRouter
