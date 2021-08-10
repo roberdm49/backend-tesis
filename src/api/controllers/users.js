@@ -1,7 +1,7 @@
 const usersRouter = require('express').Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
-const checkIfThereIsSomeErrorInTheBody = require('../utils/checkIfThereIsSomeErrorInTheBody')
+const checkIfThereIsSomeErrorInTheSigninBody = require('../utils/checkIfThereIsSomeErrorInTheSigninBody')
 
 usersRouter.get('/', (request, response, next) => {
   User.find({})
@@ -24,7 +24,7 @@ usersRouter.post('/', async (request, response, next) => {
     role
   } = request.body
 
-  const result = checkIfThereIsSomeErrorInTheBody(request.body)
+  const result = checkIfThereIsSomeErrorInTheSigninBody(request.body)
   if (result.error) {
     return response.status(400).json({ error: result.error })
   }
