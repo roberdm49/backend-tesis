@@ -9,7 +9,7 @@ const signinFieldsValidations = {
   role: true
 }
 
-const checkIfThereIsSomeErrorInTheBody = requestBody => {
+const checkIfThereIsSomeErrorInThePatientBody = requestBody => {
   for (const field in signinFieldsValidations) {
     if (!requestBody[field] || requestBody[field] === '') {
       return { field, error: constants.REQUIRE_FIELD(field) }
@@ -18,4 +18,4 @@ const checkIfThereIsSomeErrorInTheBody = requestBody => {
   return { field: null, error: false }
 }
 
-module.exports = checkIfThereIsSomeErrorInTheBody
+module.exports = checkIfThereIsSomeErrorInThePatientBody

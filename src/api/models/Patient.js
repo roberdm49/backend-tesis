@@ -8,9 +8,9 @@ const patientSchema = new Schema({
   },
   lastname: String,
   name: String,
-  sex: String,
+  gender: String,
   birtDate: Date,
-  diabetesType: Date,
+  diabetesType: String,
   checks: [{
     type: Schema.Types.ObjectId,
     ref: 'Check'
