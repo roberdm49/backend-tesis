@@ -73,7 +73,7 @@ describe('endpoints', () => {
 
       await api.post('/api/users')
         .send(validUser)
-        .expect(500) // this is for the mongoose-unique-validator
+        .expect(409)
         .expect('Content-Type', /application\/json/)
 
       const response = await api.get('/api/users')
