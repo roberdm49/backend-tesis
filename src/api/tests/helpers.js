@@ -11,7 +11,7 @@ const initialUsers = [
     password: 'roberto123',
     email: 'robertomarcos123@hotmail.com',
     avatar: null,
-    role: 'techinal'
+    role: 'technical'
   },
   {
     name: 'Nacho',
@@ -31,7 +31,7 @@ const validUser = {
   password: 'roberto123',
   email: 'robertomarcos123@hotmail.com',
   avatar: null,
-  role: 'techinal'
+  role: 'technical'
 }
 
 const invalidUser = {
@@ -43,6 +43,27 @@ const invalidUser = {
   avatar: null
 }
 
+const validLoginCredentials = {
+  username: validUser.username,
+  password: validUser.password
+}
+
+const invalidLoginCredentials = {
+  username: 'abcdefghijklmno',
+  password: 'pqrstuvwxyz'
+}
+
+const validPatient = {
+  dni: '1234567',
+  lastname: 'marcos',
+  name: 'roberto',
+  gender: 'male',
+  birthDate: new Date(),
+  checkDate: new Date(),
+  diabetesType: '1',
+  images: []
+}
+
 const getAllUsernamesFromUsers = response => {
   return response.body.map(user => user.username)
 }
@@ -52,5 +73,8 @@ module.exports = {
   api,
   validUser,
   invalidUser,
+  validLoginCredentials,
+  invalidLoginCredentials,
+  validPatient,
   getAllUsernamesFromUsers
 }
