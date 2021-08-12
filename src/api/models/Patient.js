@@ -9,7 +9,7 @@ const patientSchema = new Schema({
   lastname: String,
   name: String,
   gender: String,
-  birtDate: Date,
+  birthDate: Date,
   diabetesType: String,
   checks: [{
     type: Schema.Types.ObjectId,

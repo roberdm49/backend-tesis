@@ -11,6 +11,9 @@ const ERROR_HANDLERS = {
   TokenExpirerError: res =>
     res.status(401).json({ error: 'token expired' }),
 
+  TypeError: res =>
+    res.status(406).end(),
+
   defaultError: (res, error) => {
     console.error(error.name)
     res.status(500).end()
