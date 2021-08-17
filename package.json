@@ -22,6 +22,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "dev:test": "cross-env NODE_ENV=test nodemon src/index.js",
     "lint": "standard --fix",
     "start": "cross-env NODE_ENV=production node src/index.js",
     "test": "cross-env NODE_ENV=test PORT=1234 jest --verbose --silent",

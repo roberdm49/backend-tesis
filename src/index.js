@@ -22,6 +22,11 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/patients', patientsRouter)
 
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./api/controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 app.use(notFound)
 app.use(handleErrors)
 
