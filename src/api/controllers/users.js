@@ -42,9 +42,13 @@ usersRouter.post('/', async (request, response, next) => {
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
   const uploadedAvatar = !avatar ? avatar : await uploadAvatar(avatar)
-  const host = uploadedAvatar.service.endpoint.host
-  const imagePath = uploadedAvatar.service.config.params.Key
-  const url = !avatar ? avatar : `https://${process.env.AWS_BUCKET_NAME}.${host}/${imagePath}`
+  let url = null
+
+  if (uploadedAvatar) {
+    const host = uploadedAvatar.service.endpoint.host
+    const imagePath = uploadedAvatar.service.config.params.Key
+    url = `https://${process.env.AWS_BUCKET_NAME}.${host}/${imagePath}`
+  }
 
   const userData = {
     name,
