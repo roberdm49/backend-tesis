@@ -6,7 +6,6 @@
   "dependencies": {
     "aws-sdk": "^2.972.0",
     "bcrypt": "^5.0.1",
-    "bluebird": "^3.7.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
