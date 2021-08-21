@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/User')
 const createToken = require('../../config/createToken')
+const isTheSamePassword = require('../utils/isTheSamePassword')
 
 loginRouter.post('/', async (request, response, next) => {
   const { username, password } = request.body
@@ -10,7 +10,7 @@ loginRouter.post('/', async (request, response, next) => {
 
   const passwordCorrect = user === null
     ? false
-    : await bcrypt.compare(password, user.passwordHash)
+    : await isTheSamePassword(password, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
     return response.status(400).json({
