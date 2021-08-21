@@ -41,10 +41,10 @@ usersRouter.post('/', async (request, response, next) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const uploadedAvatar = !avatar ? avatar : await uploadAvatar(avatar)
   let url = null
 
-  if (uploadedAvatar) {
+  if (avatar) {
+    const uploadedAvatar = await uploadAvatar(avatar)
     const host = uploadedAvatar.service.endpoint.host
     const imagePath = uploadedAvatar.service.config.params.Key
     url = `https://${process.env.AWS_BUCKET_NAME}.${host}/${imagePath}`
