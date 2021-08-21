@@ -1,7 +1,7 @@
 const usersRouter = require('express').Router()
 const User = require('../models/User')
-const bcrypt = require('bcrypt')
-const uploadAvatar = require('../middlewares/stackoverfloAWS')
+const getHashedPassword = require('../utils/getHashedPassword')
+const getAvatarStoredUrl = require('../utils/getAvatarStoredUrl')
 const checkIfThereIsSomeErrorInTheSigninBody = require('../utils/checkIfThereIsSomeErrorInTheSigninBody')
 
 usersRouter.get('/', (request, response, next) => {
@@ -38,17 +38,8 @@ usersRouter.post('/', async (request, response, next) => {
     return response.status(409).json({ error: 'The username already exists' })
   }
 
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-
-  let url = null
-
-  if (avatar) {
-    const uploadedAvatar = await uploadAvatar(avatar)
-    const host = uploadedAvatar.service.endpoint.host
-    const imagePath = uploadedAvatar.service.config.params.Key
-    url = `https://${process.env.AWS_BUCKET_NAME}.${host}/${imagePath}`
-  }
+  const passwordHash = await getHashedPassword(password)
+  const url = await getAvatarStoredUrl(avatar)
 
   const userData = {
     name,

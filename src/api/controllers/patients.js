@@ -32,6 +32,7 @@ patientsRouter.post('/', userExtractor, async (request, response, next) => {
     check.save().catch(err => next(err))
     patient.checks = patient.checks.concat(check._id)
     await patient.save().catch(err => next(err))
+    // TODO: the code above can be refactored into a single function
 
     return response.status(201).end()
   } else {
@@ -47,6 +48,7 @@ patientsRouter.post('/', userExtractor, async (request, response, next) => {
     savedPatient.checks = savedPatient.checks.concat(savedCheck._id)
     await savedPatient.save().catch(err => next(err))
 
+    // TODO: the code above can be refactored into a single function
     return response.status(201).end()
   }
 })
