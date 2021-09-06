@@ -3,6 +3,7 @@ const Patient = require('../models/Patient')
 const Check = require('../models/Check')
 const userExtractor = require('../middlewares/userExtractor')
 const checkIfThereIsSomeErrorInThePatientBody = require('../utils/checkIfThereIsSomeErrorInThePatientBody')
+const getCheckImagesStoredUrls = require('../utils/getCheckImagesStoredUrls')
 
 patientsRouter.post('/', userExtractor, async (request, response, next) => {
   const {
@@ -22,11 +23,12 @@ patientsRouter.post('/', userExtractor, async (request, response, next) => {
   }
 
   const patient = await Patient.findOne({ dni })
+  const urls = getCheckImagesStoredUrls(images)
 
   if (patient) {
     const check = new Check({
       checkDate,
-      images,
+      images: urls,
       patient: patient._id
     })
     check.save().catch(err => next(err))
@@ -40,7 +42,7 @@ patientsRouter.post('/', userExtractor, async (request, response, next) => {
     const savedPatient = await patientDB.save().catch(err => next(err))
     const check = new Check({
       checkDate,
-      images,
+      images: urls,
       patient: savedPatient._id
     })
 

@@ -1,4 +1,6 @@
 const usersRouter = require('express').Router()
+const multer = require('multer')
+const upload = multer()
 const User = require('../models/User')
 const getHashedPassword = require('../utils/getHashedPassword')
 const getAvatarStoredUrl = require('../utils/getAvatarStoredUrl')
@@ -14,13 +16,12 @@ usersRouter.get('/', (request, response, next) => {
     })
 })
 
-usersRouter.post('/', async (request, response, next) => {
+usersRouter.post('/', upload.single('avatar'), async (request, response, next) => {
   const {
     name,
     lastname,
     username,
     password,
-    avatar,
     email,
     role
   } = request.body
@@ -39,7 +40,8 @@ usersRouter.post('/', async (request, response, next) => {
   }
 
   const passwordHash = await getHashedPassword(password)
-  const url = await getAvatarStoredUrl(avatar)
+
+  const avatar = await getAvatarStoredUrl(request.file)
 
   const userData = {
     name,
@@ -47,7 +49,7 @@ usersRouter.post('/', async (request, response, next) => {
     username,
     passwordHash,
     email,
-    avatar: url,
+    avatar,
     role
   }
 
