@@ -7,31 +7,37 @@ AWS.config.update({
   region: AWS_REGION
 })
 
-const imageUpload = async (base64) => {
+const imageUpload = async (file, folder) => {
   const s3 = new AWS.S3({
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
     region: AWS_REGION
   })
 
-  const buf = Buffer.from(base64.replace(/^data:image\/\w+;base64,/, ''), 'base64')
+  const format = file.mimetype.split('/')[1]
+  const { mimetype } = file
+  const hashedName = `${uuid()}-${Date.now()}`
+
+  const path = `${folder}/${hashedName}.${format}`
+
   const data = {
     Bucket: AWS_BUCKET_NAME,
-    Key: `Avatars/${uuid()}.jpeg`, // refactor, the type must be the real one
-    Body: buf,
-    ContentEncoding: 'base64',
-    ContentType: 'image/jpeg' // refactor, the type must be the real one,
+    Key: path,
+    Body: file.buffer,
+    ContentType: mimetype
   }
-  const response = s3.upload(data, function (err, data) {
+
+  const uploadedImage = s3.putObject(data, function (err, data) {
     if (err) {
       console.log(err)
       console.log('Error uploading data: ', data)
     } else {
       console.log('Successfully uploaded!')
+      console.log(data)
     }
   })
 
-  return response
+  return uploadedImage
 }
 
 module.exports = imageUpload
