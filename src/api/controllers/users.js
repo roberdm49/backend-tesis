@@ -26,6 +26,7 @@ usersRouter.post('/', upload.single('avatar'), async (request, response, next) =
     role
   } = request.body
 
+  // TODO: WORK WITH THE ERROR RESULT OVER HERE
   const result = checkIfThereIsSomeErrorInTheSigninBody(request.body)
   if (result.error) {
     return response.status(400).json({ error: result.error })

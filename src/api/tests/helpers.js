@@ -8,7 +8,8 @@ const initialUsers = [
     name: 'Roberto',
     lastname: 'Marcos',
     username: 'roberto',
-    password: 'roberto123',
+    password: 'Roberto123',
+    repeatPassword: 'Roberto123',
     email: 'robertomarcos123@hotmail.com',
     avatar: null,
     role: 'technical'
@@ -17,7 +18,8 @@ const initialUsers = [
     name: 'Nacho',
     lastname: 'Larrabide',
     username: 'nacho',
-    password: 'nacho123',
+    password: 'Nacho123',
+    repeatPassword: 'Nacho123',
     email: 'nacholarrabide123@hotmail.com',
     avatar: null,
     role: 'admin'
@@ -28,7 +30,8 @@ const validUser = {
   name: 'Roberto',
   lastname: 'Marcos',
   username: 'roberto',
-  password: 'roberto123',
+  password: 'Roberto123!',
+  repeatPassword: 'Roberto123!',
   email: 'robertomarcos123@hotmail.com',
   avatar: null,
   role: 'technical'
@@ -39,6 +42,7 @@ const invalidUser = {
   lastname: 'Marcos',
   username: 'roberto',
   password: 'roberto123',
+  repeatPassword: 'roberto123',
   email: 'robertomarcos123@hotmail.com',
   avatar: null
 }

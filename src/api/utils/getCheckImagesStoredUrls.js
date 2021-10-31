@@ -1,7 +1,7 @@
 const uploadAvatar = require('../middlewares/stackoverfloAWS')
 
 const getCheckImagesStoredUrls = async (images) => {
-  if (images.length) {
+  if (images?.length) {
     const folder = 'checks'
     const responses = await Promise.all(images.map(image => {
       return uploadAvatar(image, folder)

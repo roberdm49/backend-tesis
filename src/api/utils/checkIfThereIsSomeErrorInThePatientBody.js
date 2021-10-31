@@ -1,6 +1,6 @@
-const constants = require('../constants/errorsMessages')
+const constants = require('./errorsMessages')
 
-const signinFieldsValidations = {
+const patientFieldsValidations = {
   dni: true,
   name: true,
   lastname: true,
@@ -10,8 +10,8 @@ const signinFieldsValidations = {
   diabetesType: true
 }
 
-const checkIfThereIsSomeErrorInTheSigninBody = requestBody => {
-  for (const field in signinFieldsValidations) {
+const checkIfThereIsSomeErrorInThePatientBody = requestBody => {
+  for (const field in patientFieldsValidations) {
     if (!requestBody[field] || requestBody[field] === '') {
       return { field, error: constants.REQUIRE_FIELD(field) }
     }
@@ -19,4 +19,4 @@ const checkIfThereIsSomeErrorInTheSigninBody = requestBody => {
   return { field: null, error: false }
 }
 
-module.exports = checkIfThereIsSomeErrorInTheSigninBody
+module.exports = checkIfThereIsSomeErrorInThePatientBody

@@ -1,21 +1,35 @@
-const constants = require('../constants/errorsMessages')
+const {
+  usernameRules,
+  passwordRules,
+  nameRules,
+  lastnameRules,
+  emailRules,
+  roleRules,
+  avatarRules,
+  repeatPasswordRules
+} = require('./fieldsRules')
+const { thereIsAnErrorInTheRules } = require('./validateRules')
 
 const signinFieldsValidations = {
-  username: true,
-  password: true,
-  name: true,
-  lastname: true,
-  email: true,
-  role: true
+  username: usernameRules,
+  password: passwordRules,
+  name: nameRules,
+  lastname: lastnameRules,
+  email: emailRules,
+  role: roleRules,
+  avatar: avatarRules,
+  repeatPassword: repeatPasswordRules
 }
 
-const checkIfThereIsSomeErrorInThePatientBody = requestBody => {
+const checkIfThereIsSomeErrorInTheSigninBody = requestBody => {
   for (const field in signinFieldsValidations) {
-    if (!requestBody[field] || requestBody[field] === '') {
-      return { field, error: constants.REQUIRE_FIELD(field) }
-    }
+    const error = field === 'repeatPassword'
+      ? thereIsAnErrorInTheRules(requestBody[field], signinFieldsValidations[field], requestBody.password)
+      : thereIsAnErrorInTheRules(requestBody[field], signinFieldsValidations[field])
+
+    if (error) return { field, error }
   }
   return { field: null, error: false }
 }
 
-module.exports = checkIfThereIsSomeErrorInThePatientBody
+module.exports = checkIfThereIsSomeErrorInTheSigninBody

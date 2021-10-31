@@ -1,11 +1,13 @@
 const patientsRouter = require('express').Router()
+const multer = require('multer')
+const upload = multer()
 const Patient = require('../models/Patient')
 const Check = require('../models/Check')
 const userExtractor = require('../middlewares/userExtractor')
 const checkIfThereIsSomeErrorInThePatientBody = require('../utils/checkIfThereIsSomeErrorInThePatientBody')
 const getCheckImagesStoredUrls = require('../utils/getCheckImagesStoredUrls')
 
-patientsRouter.post('/', userExtractor, async (request, response, next) => {
+patientsRouter.post('/', [userExtractor, upload.array('images')], async (request, response, next) => {
   const {
     dni,
     name,
@@ -13,8 +15,7 @@ patientsRouter.post('/', userExtractor, async (request, response, next) => {
     gender,
     birthDate,
     checkDate,
-    diabetesType,
-    images
+    diabetesType
   } = request.body
 
   const result = checkIfThereIsSomeErrorInThePatientBody(request.body)
@@ -23,7 +24,7 @@ patientsRouter.post('/', userExtractor, async (request, response, next) => {
   }
 
   const patient = await Patient.findOne({ dni })
-  const urls = getCheckImagesStoredUrls(images)
+  const urls = getCheckImagesStoredUrls(request.files)
 
   if (patient) {
     const check = new Check({

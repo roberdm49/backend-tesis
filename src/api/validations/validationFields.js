@@ -1,13 +1,8 @@
-const withoutSpaces = require('./withoutSpaces')
-
 const {
   DNI_MIN_LENGTH,
   LASTNAME_MIN_LENGTH,
-  MAX_AGE, MIN_AGE,
-  NAME_MIN_LENGTH,
-  PASSWORD_MIN_LENGTH,
-  USERNAME_MIN_LENGTH
-} = require('./constants')
+  MAX_AGE, MIN_AGE
+} = require('../constants/constants')
 const minLength = require('./minLength')
 
 const validAge = (value) => {
@@ -37,20 +32,14 @@ const validLastname = (value) => {
   return theLastNameIsValid
 }
 
-const validName = (value) => {
-  const minLengthForName = minLength(NAME_MIN_LENGTH)
-  const theNameIsValid = minLengthForName(value)
-  return theNameIsValid
-}
-
 const validPassword = (value) => {
   const regex1 = /[a-z]+/i
   const regex2 = /[A-Z]+/i
   const regex3 = /[0-9]+/i
-  return (regex1.test(value) && regex2.test(value) && regex3.test(value) && value.length >= PASSWORD_MIN_LENGTH)
+  return (regex1.test(value) && regex2.test(value) && regex3.test(value))
 }
 
-const validRepeatPassword = (password) => (repeatPassword) => {
+const validRepeatPassword = (password, repeatPassword) => {
   return password === repeatPassword
 }
 
@@ -59,24 +48,12 @@ const validRole = (role) => {
   return roles.includes(role)
 }
 
-const validUsername = (value) => {
-  const minLengthForUserName = minLength(USERNAME_MIN_LENGTH)
-  const theUserNameIsValid = minLengthForUserName(value)
-  if (!theUserNameIsValid) {
-    return false
-  }
-  const thereIsSomeSpace = withoutSpaces(value)
-  return thereIsSomeSpace
-}
-
 module.exports = {
   validAge,
   validDni,
   validEmail,
   validLastname,
-  validName,
   validPassword,
   validRepeatPassword,
-  validRole,
-  validUsername
+  validRole
 }
