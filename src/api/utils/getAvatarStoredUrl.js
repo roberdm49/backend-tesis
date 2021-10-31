@@ -1,4 +1,5 @@
 const uploadAvatar = require('../middlewares/stackoverfloAWS')
+const { AWS_BUCKET_NAME } = process.env
 
 const getAvatarStoredUrl = async (avatar) => {
   if (avatar) {
@@ -6,7 +7,7 @@ const getAvatarStoredUrl = async (avatar) => {
     const uploadedAvatar = await uploadAvatar(avatar, folder)
     const host = uploadedAvatar.service.endpoint.host
     const imagePath = uploadedAvatar.params.Key
-    const url = `https://${process.env.AWS_BUCKET_NAME}.${host}/${imagePath}`
+    const url = `https://${AWS_BUCKET_NAME}.${host}/${imagePath}`
 
     return url
   }
