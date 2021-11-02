@@ -17,6 +17,9 @@ const ERROR_HANDLERS = {
   BadRequestError: (res, { message }) =>
     res.status(400).send({ error: message }),
 
+  AmazonError: (res, { message }) =>
+    res.status(503).send({ error: message }),
+
   defaultError: (res, error) => {
     console.error(error.name)
     res.status(500).end()

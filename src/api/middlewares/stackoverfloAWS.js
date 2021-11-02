@@ -1,5 +1,7 @@
 const AWS = require('aws-sdk')
 const uuid = require('uuid').v4
+const getImageUrl = require('../utils/getImageUrl')
+const { AmazonError } = require('../utils/CustomErrors')
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_BUCKET_NAME, AWS_REGION } = process.env
 
@@ -27,17 +29,18 @@ const imageUpload = async (file, folder) => {
     ContentType: mimetype
   }
 
-  const uploadedImage = s3.putObject(data, function (err, data) {
+  s3.putObject(data, function (err, data) {
     if (err) {
       console.log(err)
       console.log('Error uploading data: ', data)
+      throw new AmazonError('An error has occured uploading an image to the s3 bucket!')
     } else {
       console.log('Successfully uploaded!')
       console.log(data)
     }
   })
 
-  return uploadedImage
+  return getImageUrl(path)
 }
 
 module.exports = imageUpload

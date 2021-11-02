@@ -15,7 +15,7 @@ class PatientsController {
   async post (data, files) {
     const { dni, name, lastname, gender, birthDate, checkDate, diabetesType } = data
     const patient = await Patient.findOne({ dni })
-    const urls = getCheckImagesStoredUrls(files)
+    const urls = await getCheckImagesStoredUrls(files)
 
     if (patient) {
       const check = new Check({
