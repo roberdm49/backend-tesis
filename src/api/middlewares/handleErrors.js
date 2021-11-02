@@ -14,6 +14,9 @@ const ERROR_HANDLERS = {
   TypeError: res =>
     res.status(406).end(),
 
+  BadRequestError: (res, { message }) =>
+    res.status(400).send({ error: message }),
+
   defaultError: (res, error) => {
     console.error(error.name)
     res.status(500).end()

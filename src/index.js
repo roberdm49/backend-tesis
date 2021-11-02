@@ -10,9 +10,9 @@ const morgan = require('morgan')
 const notFound = require('./api/middlewares/notFound')
 const handleErrors = require('./api/middlewares/handleErrors')
 
-const patientsRouter = require('./api/controllers/patients')
-const loginRouter = require('./api/controllers/login')
-const usersRouter = require('./api/controllers/users')
+const patientsRouter = require('./api/routes/Patients')
+const loginRouter = require('./api/routes/Login')
+const usersRouter = require('./api/routes/Users')
 
 app.use(cors())
 app.use(express.json())
@@ -24,7 +24,7 @@ app.use('/api/login', loginRouter)
 app.use('/api/patients', patientsRouter)
 
 if (NODE_ENV === 'test') {
-  const testingRouter = require('./api/controllers/testing')
+  const testingRouter = require('./api/routes/Testing')
   app.use('/api/testing', testingRouter)
 }
 
