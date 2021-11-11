@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const QueueUserPendent = require('../models/QueueUserPendent')
 const getHashedPassword = require('../utils/getHashedPassword')
 const getAvatarStoredUrl = require('../utils/getAvatarStoredUrl')
 const checkIfThereIsSomeErrorInTheSigninBody = require('../utils/checkIfThereIsSomeErrorInTheSigninBody')
@@ -38,8 +39,8 @@ class UsersController {
       role
     }
 
-    const userDB = new User(userData)
-    await userDB.save()
+    const quequeUserDB = new QueueUserPendent(userData)
+    await quequeUserDB.save()
   }
 }
 
